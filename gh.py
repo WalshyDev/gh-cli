@@ -183,7 +183,7 @@ def commit(args):
     message = '[CI Skip] ' + ' '.join(args[1:])
 
   run('git add .')
-  run(['git', 'commit', '-m', '"' + message + '"'])
+  run(['git', 'commit', '-m', message])
 
 def diff(args):
   # OwO Diffity
