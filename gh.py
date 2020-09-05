@@ -119,7 +119,7 @@ def open_pr(remote, pr_id):
 #################################
 ## Usage
 #################################
-# gh <branch(b)|commit(c)|diff|push|pull|pullrequest(pr)|open(o)|unstage...>
+# gh <branch(b)|commit(c)|diff|init(i)|open(o)|push|pull|pullrequest(pr)|unstage...>
 def print_usage():
   args = sys.argv
   if (len(args) == 2):
@@ -129,6 +129,8 @@ def print_usage():
       usage(arg + ' <branch>')
     elif (arg == 'commit' or arg == 'c'):
       usage(arg + ' <message>')
+    elif (arg == 'init' or arg == 'i'):
+      usage(arg + ' [remote-url]')
     elif (arg == 'push'):
       usage(arg + ' [remote] [branch]')
     elif (arg == 'pull'):
@@ -153,10 +155,11 @@ def print_usage():
       + '\n  branch  <branch>             - Switch to an existing or new branch'
       + "\n  commit  '<message>'          - Add files and commit"
       + '\n  diff                         - View current diff between HEAD and unstaged changes'
+      + '\n  init    [remote-url]         - Initialise a git repo and add `origin` remote'
+      + '\n  open    [remote]             - Open the current repo on GitHub'
       + '\n  push    [remote] [branch]    - Push to current or specific branch'
       + '\n  pull    [remote] [branch]    - Pull from current or specific branch'
       + '\n  pr      new/open <title/id>  - Open new or existing PR'
-      + '\n  open    [remote]             - Open the current repo on GitHub'
       + '\n  unstage [file]               - Unstage current changes'
     )
 
@@ -188,6 +191,12 @@ def commit(args):
 def diff(args):
   # OwO Diffity
   run('git diff')
+
+def init(args):
+  run('git init')
+
+  if (len(args) > 0):
+    run('git remote add origin ' + args[0])
 
 def push(args):
   remote = 'origin'
@@ -257,10 +266,6 @@ def open(args):
   webbrowser.open(url)
 
 def main():
-  if not (os.path.exists('.git')):
-    print('You are not in a git directory!')
-    return
-
   args = sys.argv
 
   global debug
@@ -271,12 +276,18 @@ def main():
   else:
     arg = args[1].lower()
 
+    if (len(args) > 0 and arg != 'init' and arg != 'i' and arg != 'open' and arg != 'o' and not os.path.exists('.git')):
+      print('You are not in a git directory!')
+      return
+
     if (arg == 'branch' or arg == 'b'):
       branch(args[2:])
     elif (arg == 'commit' or arg == 'c'):
       commit(args[2:])
     elif (arg == 'diff'):
       diff(args[2:])
+    elif (arg == 'init' or arg == 'i'):
+      init(args[2:])
     elif (arg == 'push'):
       push(args[2:])
     elif (arg == 'pull'):
