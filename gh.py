@@ -218,7 +218,7 @@ def pull(args):
   branch = current_branch()
 
   if (len(args) == 1):
-    branch = args[0]
+    remote = args[0]
   elif (len(args) == 2):
     remote = args[0]
     branch = args[1]
