@@ -16,6 +16,6 @@ if [ "$py" != '/usr/bin/python3' ]; then
 fi
 
 chmod +x gh
-sudo mv gh /usr/lib/gh
+sudo mv gh /usr/bin/gh
 
 echo 'Setup gh-cli, you can now use `gh` anywhere'
