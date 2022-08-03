@@ -202,14 +202,19 @@ def push(args):
   remote = 'origin'
   branch = current_branch()
 
-  if (len(args) == 1):
+  force_push = False
+  for arg in args:
+    if arg == '-f' or arg == '--force':
+      force_push = True
+
+  if (len(args) == 1 and args[0] != '-f' and args[0] != '--force'):
     branch = args[0]
-  elif (len(args) == 2):
+  elif (len(args) == 2 and args[0] != '-f' and args[0] != '--force'):
     remote = args[0]
     branch = args[1]
 
   # Push to origin and current branch
-  output = run('git push ' + remote + ' ' + branch)
+  output = run('git push ' + remote + ' ' + branch + (' --force' if force_push == True else ''))
   if (output.returncode != 0):
     print('Could not push, did you commit anything?')
 
